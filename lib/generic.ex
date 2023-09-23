@@ -1,6 +1,6 @@
-defmodule Socket do
+defmodule Generic do
   @moduledoc """
-  Socket keeps the contexts that define your domain
+  Generic keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

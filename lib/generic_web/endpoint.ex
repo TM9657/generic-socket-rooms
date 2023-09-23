@@ -1,15 +1,19 @@
-defmodule SocketWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :socket
+defmodule GenericWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :generic
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_socket_key",
-    signing_salt: "p1McnAE9",
+    key: "_generic_key",
+    signing_salt: "ogx5eg7B",
     same_site: "Lax"
   ]
+
+  socket "/socket", GenericWeb.RoomsSocket,
+    websocket: true,
+    longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
@@ -19,15 +23,13 @@ defmodule SocketWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :socket,
+    from: :generic,
     gzip: false,
-    only: SocketWeb.static_paths()
+    only: GenericWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-    plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
 
@@ -46,5 +48,5 @@ defmodule SocketWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug SocketWeb.Router
+  plug GenericWeb.Router
 end

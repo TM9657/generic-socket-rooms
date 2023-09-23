@@ -7,15 +7,35 @@
 # General application configuration
 import Config
 
+# !THIS IS ONLY FOR PUBLIC KEYS (OTHERWISE REMOVE THE JWK_CONTROLLER, WHICH RETURNS THIS CONFIG)
+config :joken,
+  pub_key: [
+    signer_alg: "ES512",
+    key_map: %{
+      "alg" => "ES512",
+      "kty" => "EC",
+      "crv" => "P-521",
+      "x" => System.get_env("JOKEN_PUB_KEY_X"),
+      "y" => System.get_env("JOKEN_PUB_KEY_Y")
+    }
+]
+
 # Configures the endpoint
-config :socket, SocketWeb.Endpoint,
+config :generic, GenericWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
-    formats: [html: SocketWeb.ErrorHTML, json: SocketWeb.ErrorJSON],
+    formats: [json: GenericWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Socket.PubSub,
-  live_view: [signing_salt: "iqO+oELA"]
+  pubsub_server: Generic.PubSub,
+  live_view: [signing_salt: "gZ/ekb3b"],
+  jwk: %{
+    "alg" => "ES512",
+    "kty" => "EC",
+    "crv" => "P-521",
+    "x" => System.get_env("JOKEN_PUB_KEY_X"),
+    "y" => System.get_env("JOKEN_PUB_KEY_Y")
+  }
 
 # Configures the mailer
 #
@@ -24,7 +44,7 @@ config :socket, SocketWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :socket, Socket.Mailer, adapter: Swoosh.Adapters.Local
+config :generic, Generic.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,

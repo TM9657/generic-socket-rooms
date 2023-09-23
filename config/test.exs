@@ -2,13 +2,13 @@ import Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :socket, SocketWeb.Endpoint,
+config :generic, GenericWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "+QePRW9jPq+e10SHUERo9X1cIov6K6Bgk5VdvQoZKv4WxwV/eDMCRLCxKU+6LKDl",
+  secret_key_base: "h0qFJyg1HhV8diQd1KF/gfim6V52NM7qmDx4CvFyec2uNq3LXXgrMez1VChQMqoo",
   server: false
 
 # In test we don't send emails.
-config :socket, Socket.Mailer,
+config :generic, Generic.Mailer,
   adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters.
