@@ -39,8 +39,13 @@ defmodule GenericWeb.RoomsSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    {status, claims} = GenericWeb.Guardian.decode_and_verify(token)
+    if status != :ok do
+      :error
+    end
+    %{"sub" => sub, "room_name" => _, "type" => _} = claims
+    {:ok, assign(socket, :sub, sub)}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

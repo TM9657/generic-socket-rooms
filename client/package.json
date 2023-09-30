@@ -1,0 +1,15 @@
+{
+  "name": "@tm9657/socket-client",
+  "module": "build/bundle.js",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "package": "bun build ./index.ts --outfile=./build/bundle.js"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

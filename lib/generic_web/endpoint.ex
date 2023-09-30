@@ -13,7 +13,7 @@ defmodule GenericWeb.Endpoint do
 
   socket "/socket", GenericWeb.RoomsSocket,
     websocket: true,
-    longpoll: false
+    longpoll: true
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
