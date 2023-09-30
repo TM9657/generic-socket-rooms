@@ -7,35 +7,29 @@
 # General application configuration
 import Config
 
-# !THIS IS ONLY FOR PUBLIC KEYS (OTHERWISE REMOVE THE JWK_CONTROLLER, WHICH RETURNS THIS CONFIG)
-config :joken,
-  pub_key: [
-    signer_alg: "ES512",
-    key_map: %{
-      "alg" => "ES512",
-      "kty" => "EC",
-      "crv" => "P-521",
-      "x" => System.get_env("JOKEN_PUB_KEY_X"),
-      "y" => System.get_env("JOKEN_PUB_KEY_Y")
-    }
-]
+config :generic, GenericWeb.Guardian,
+  allowed_algos: ["ES512"],
+  secret_key: %{
+    "crv" => "P-521",
+    "kty" => "EC",
+    "x" => System.get_env("JOKEN_PUB_KEY_X"),
+    "y" => System.get_env("JOKEN_PUB_KEY_Y"),
+    "d" => System.get_env("JOKEN_PUB_KEY_D")
+  },
+  ttl: {30, :days}
+
+
 
 # Configures the endpoint
 config :generic, GenericWeb.Endpoint,
   url: [host: "localhost"],
+  api_key: System.get_env("APP_API_KEY"),
   render_errors: [
     formats: [json: GenericWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Generic.PubSub,
-  live_view: [signing_salt: "gZ/ekb3b"],
-  jwk: %{
-    "alg" => "ES512",
-    "kty" => "EC",
-    "crv" => "P-521",
-    "x" => System.get_env("JOKEN_PUB_KEY_X"),
-    "y" => System.get_env("JOKEN_PUB_KEY_Y")
-  }
+  live_view: [signing_salt: "gZ/ekb3b"]
 
 # Configures the mailer
 #

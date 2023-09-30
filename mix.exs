@@ -35,6 +35,7 @@ defmodule Generic.MixProject do
       {:phoenix, "~> 1.7.7"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      {:guardian, "~> 2.3.2"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.13"},
@@ -42,7 +43,6 @@ defmodule Generic.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.3"},
-      {:joken, "~> 2.6"},
       {:plug_cowboy, "~> 2.5"}
     ]
   end

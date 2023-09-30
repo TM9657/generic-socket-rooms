@@ -5,16 +5,33 @@ defmodule GenericWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", GenericWeb do
+  pipeline :auth do
+    plug GenericWeb.Plugs.ApiKeyCheck
+  end
+
+  scope "/v1/api", GenericWeb do
     pipe_through :api
 
     get "/jwk", JwkController, :show
+    get "/verify", JwkVerifyController, :show
   end
 
-  scope "/", GenericWeb do
+  scope "/v1/api/auth", GenericWeb do
+    pipe_through [:api, :auth]
+    post "/jwk_sign", JwkSignController, :show
+    get "/", DefaultController, :show
+  end
+
+  scope "/v1", GenericWeb do
+    get "/", DefaultController, :show
+  end
+
+  scope "/v1/socket", GenericWeb do
 
     get "/", DefaultController, :show
   end
+
+
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:generic, :dev_routes) do
@@ -25,7 +42,7 @@ defmodule GenericWeb.Router do
     # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
-    scope "/dev" do
+    scope "/v1/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
       live_dashboard "/dashboard", metrics: GenericWeb.Telemetry
