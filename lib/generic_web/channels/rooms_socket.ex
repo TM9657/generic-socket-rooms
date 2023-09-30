@@ -1,5 +1,6 @@
 defmodule GenericWeb.RoomsSocket do
   use Phoenix.Socket
+  import Logger
 
   # A Socket handler
   #
@@ -12,8 +13,8 @@ defmodule GenericWeb.RoomsSocket do
   #
 
   channel "room:*", GenericWeb.RoomChannel
-  channel "pm:*", GenericWeb.RoomChannel
-  channel "signaling:*", GenericWeb.RoomChannel
+  channel "pm:*", GenericWeb.PMChannel
+  channel "signaling:*", GenericWeb.SignalingChannel
 
   #
   # To create a channel file, use the mix task:
@@ -39,13 +40,14 @@ defmodule GenericWeb.RoomsSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(%{"token" => token}, socket, _connect_info) do
-    {status, claims} = GenericWeb.Guardian.decode_and_verify(token)
-    if status != :ok do
-      :error
-    end
+  def connect(%{"params" => %{"token" => token}}, socket, _connect_info) do
+    {:ok, claims} = GenericWeb.Guardian.decode_and_verify(token)
     %{"sub" => sub, "room_name" => _, "type" => _} = claims
-    {:ok, assign(socket, :sub, sub)}
+    if sub == nil || sub == ""  do
+      {:error, %{reason: "unauthorized"}}
+    else
+      {:ok, assign(socket, :sub, sub)}
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -59,5 +61,5 @@ defmodule GenericWeb.RoomsSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(_socket), do: nil
+  def id(socket), do: "pm:#{socket.assigns.sub}"
 end

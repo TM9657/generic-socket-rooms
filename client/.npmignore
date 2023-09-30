@@ -4,3 +4,5 @@ build.ts
 tsconfig.json
 bun.lockb
 node_modules
+tsconfig.tsbuildinfo
+build/bundle.d.ts

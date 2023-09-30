@@ -9,6 +9,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+build/bundle.d.ts
+tsconfig.tsbuildinfo
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 

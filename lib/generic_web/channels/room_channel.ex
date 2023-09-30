@@ -1,17 +1,14 @@
 defmodule GenericWeb.RoomChannel do
   use Phoenix.Channel
-
-  def join("room:" <> room_id, %{"token" => token}, socket) do
-    {status, claims} = GenericWeb.Guardian.decode_and_verify(token)
-    if status != :ok do
-      {:error, %{reason: "unauthorized"}}
-    end
+  import Logger
+  def join("room:" <> room_id, %{"params" => %{"token" => token}}, socket) do
+    {:ok, claims} = GenericWeb.Guardian.decode_and_verify(token)
     %{"sub" => _, "room_name" => room_name, "type" => type} = claims
-    if room_id != room_name || type != "room" do
+    if room_name == room_id && type == "room" do
+      {:ok, socket}
+    else
       {:error, %{reason: "unauthorized"}}
     end
-
-    {:ok, socket}
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
