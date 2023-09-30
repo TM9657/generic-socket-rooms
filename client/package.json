@@ -1,7 +1,7 @@
 {
   "name": "@tm9657/socket-client",
   "module": "build/bundle.js",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "type": "module",
   "types": "types/index.d.ts",
   "scripts": {
@@ -12,5 +12,6 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "repository": "https://github.com/TM9657/generic-socket-rooms"
 }

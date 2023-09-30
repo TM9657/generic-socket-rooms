@@ -1,10 +1,11 @@
 "use client";
 import { connect, join } from "@tm9657/socket-client"
+import Socket from "@tm9657/socket-client/types/src/socket";
 import { useState } from "react";
 export default function Rooms() {
     const [token, setToken] = useState("");
     const [room, setRoom] = useState("");
-    const [socket, setSocket] = useState(null);
+    const [socket, setSocket] = useState<Socket | null>(null);
     async function createSocket() {
         const socket = await connect("ws://localhost:4000/socket", token);
         setSocket(socket)

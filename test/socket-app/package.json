@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tm9657/socket-client": "^0.0.2",
+    "@tm9657/socket-client": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
