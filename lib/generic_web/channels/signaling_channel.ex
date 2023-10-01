@@ -11,8 +11,10 @@ defmodule GenericWeb.SignalingChannel do
     end
   end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast!(socket, "new_msg", %{body: body})
+  def handle_in(event, payload, socket) do
+    sub = socket.assigns.sub
+    message = Map.put(payload, "sender", sub)
+    broadcast!(socket, event, message)
     {:noreply, socket}
   end
 end

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "fly": "cp -n fly.template.toml fly.toml",
-    "deploy": "fly deploy"
+    "deploy": "fly deploy",
+    "install": "mix deps.get",
+    "dev": "mix phx.server"
   },
   "devDependencies": {
     "bun-types": "latest"

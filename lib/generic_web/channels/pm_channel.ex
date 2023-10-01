@@ -11,8 +11,11 @@ defmodule GenericWeb.PMChannel do
     end
   end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast!(socket, "new_msg", %{body: body})
+  def handle_in("pm", payload, socket) do
+    sub = socket.assigns.sub
+    receiver = Map.get(payload, "receiver")
+    message = Map.put(payload, "sender", sub)
+    GenericWeb.Endpoint.broadcast("pm:#{receiver}", "pm", message)
     {:noreply, socket}
   end
 end
