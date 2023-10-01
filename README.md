@@ -8,14 +8,57 @@
 </p>
 
 # Generic Socket Rooms
+Generic, scalable websocket server that should support most use-cases. It comes with a client library that can be installed via
 
-To start your Server:
+`npm install @tm9657/socket-client`
+
+We are using Elixir / Phoenix to use the language specific features and mitigate the use for Redis adapters (KISS) for scaling across multiple instances.
+
+Access to rooms is managed via JWT. The server is able to return signed JWT based on your API-Key. However you can also use our [JWK Store](https://github.com/TM9657/jwk-store) (serverless) to implement rolling keys or sign the tokens in other services.
+
+The token should have the following claims:
+```
+{
+  "sub": "user id",
+  "room_name": "the room this token gives access to",
+  "type": "room | signaling"
+}
+```
+
+Generally the following rooms are possible: `room:*`, `pm:<sub>` and `signaling:*`
+
+### API
+```
+> GET "/v1/api/jwk" - returns the current public key (remove this if you use symmetric keys)
+```
+```
+> POST "/v1/api/auth/jwk_sign" - signs a new JWT that is valid for 30 days (REQUIRES API-KEY)
+
+body: {
+	"room_name": "room id (without prefix room or signaling)",
+	"sub": "<user-id>",
+	"type": "room|signaling"
+}
+```
+
+```
+> GET "/v1/api/verify" checks the auth header token for validity
+```
+
+### Development Server:
 
   * Run `mix setup` to install and setup dependencies
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+### Deploy to Fly
+To deploy to fly use the following commands:
+1. `bun run fly`
+2. adjust your newly created `fly.toml`
+3. `bun run deploy`
+
+---
 **Provided by TM9657 GmbH with ❤️**
 ### Check out some of our products:
 - [Kwirk.io](https://kwirk.io?ref=github) (Text Editor with AI integration, privacy focus and offline support)

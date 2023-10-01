@@ -27,7 +27,6 @@ defmodule GenericWeb.Router do
   end
 
   scope "/v1/socket", GenericWeb do
-
     get "/", DefaultController, :show
   end
 
