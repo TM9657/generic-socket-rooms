@@ -14,8 +14,6 @@ defmodule GenericWeb.RoomChannel do
   def handle_in(event, payload, socket) do
     sub = socket.assigns.sub
     message = Map.put(payload, "sender", sub)
-    Logger.info inspect(message)
-    Logger.info inspect(sub)
     broadcast!(socket, event, message)
     {:noreply, socket}
   end
