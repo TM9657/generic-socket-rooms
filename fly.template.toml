@@ -1,0 +1,29 @@
+# fly.toml app configuration file generated for generic-socket-rooms on 2023-10-01T09:16:55+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "<app-name>"
+primary_region = "<region>"
+kill_signal = "SIGTERM"
+swap_size_mb = 512
+
+[build]
+
+[env]
+  PHX_HOST = "<host>"
+  PORT = "8080"
+  RELEASE_COOKIE = "<release-cookie>"
+  
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 2
+  processes = ["app"]
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 800

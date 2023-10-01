@@ -4,6 +4,7 @@
 /doc
 /.fetch
 erl_crash.dump
+fly.toml
 *.ez
 *.beam
 /config/*.secret.exs
@@ -11,6 +12,7 @@ erl_crash.dump
 .env
 # The directory Mix will write compiled artifacts to.
 /_build/
+node_modules
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/

@@ -36,6 +36,34 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
+  app_name =
+    System.get_env("FLY_APP_NAME") ||
+      raise "FLY_APP_NAME not available"
+
+  config :generic, GenericWeb.Guardian,
+    allowed_algos: ["ES512"],
+    secret_key: %{
+      "crv" => "P-521",
+      "kty" => "EC",
+      "x" => System.get_env("JOKEN_PUB_KEY_X"),
+      "y" => System.get_env("JOKEN_PUB_KEY_Y"),
+      "d" => System.get_env("JOKEN_PUB_KEY_D")
+    },
+    ttl: {30, :days}
+
+  config :libcluster,
+    debug: true,
+    topologies: [
+      fly6pn: [
+        strategy: Cluster.Strategy.DNSPoll,
+        config: [
+          polling_interval: 5_000,
+          query: "#{app_name}.internal",
+          node_basename: app_name
+        ]
+      ]
+    ]
+
   config :generic, GenericWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
@@ -46,7 +74,8 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port
     ],
-    secret_key_base: secret_key_base
+    secret_key_base: secret_key_base,
+    api_key: System.get_env("APP_API_KEY")
 
   # ## SSL Support
   #

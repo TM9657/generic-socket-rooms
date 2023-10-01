@@ -1,0 +1,15 @@
+{
+  "name": "generic-socket-rooms",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "fly": "cp -n fly.template.toml fly.toml",
+    "deploy": "fly deploy"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

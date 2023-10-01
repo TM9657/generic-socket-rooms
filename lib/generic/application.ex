@@ -7,6 +7,7 @@ defmodule Generic.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
     children = [
       # Start the Telemetry supervisor
       GenericWeb.Telemetry,
@@ -15,7 +16,8 @@ defmodule Generic.Application do
       # Start Finch
       {Finch, name: Generic.Finch},
       # Start the Endpoint (http/https)
-      GenericWeb.Endpoint
+      GenericWeb.Endpoint,
+      {Cluster.Supervisor, [topologies, [name: Generic.ClusterSupervisor]]}
       # Start a worker by calling: Generic.Worker.start_link(arg)
       # {Generic.Worker, arg}
     ]
